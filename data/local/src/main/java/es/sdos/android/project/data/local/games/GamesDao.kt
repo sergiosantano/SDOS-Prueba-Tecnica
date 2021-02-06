@@ -13,7 +13,7 @@ abstract class GamesDao {
     @Query("SELECT * FROM table_games")
     abstract suspend fun getGames(): List<GameDbo>
 
-    @Query("SELECT * FROM table_rounds where id = :gameId")
+    @Query("SELECT * FROM table_rounds where gameId = :gameId")
     abstract suspend fun getRounds(gameId: Long): List<RoundDbo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -25,7 +25,7 @@ abstract class GamesDao {
     @Query("DELETE FROM table_games WHERE id = :gameId")
     abstract suspend fun deleteGame(gameId: Long)
 
-    @Query("DELETE FROM table_rounds WHERE id = :gameId")
+    @Query("DELETE FROM table_rounds WHERE gameId = :gameId")
     abstract suspend fun deleteRounds(gameId: Long)
 
 }
