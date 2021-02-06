@@ -30,11 +30,11 @@ internal class GamesRepositoryImpl(
     override suspend fun synchronizeData(): RepositoryResponse<List<GameBo>> {
         return object : CacheableRemoteResponse<List<GameBo>>() {
             override suspend fun loadFromLocal(): List<GameBo>? {
-                return null
+                return local.getGames()
             }
 
             override fun shouldRequestFromRemote(localResponse: List<GameBo>): Boolean {
-                return true
+                return localResponse.isEmpty()
             }
 
             override suspend fun requestRemoteCall(): List<GameBo> {
@@ -49,11 +49,19 @@ internal class GamesRepositoryImpl(
     }
 
     override suspend fun createGame(): RepositoryResponse<GameBo> {
-        TODO("Not yet implemented")
+        return object : LocalResponse<GameBo>() {
+            override suspend fun loadFromLocal(): GameBo? {
+                return local.createGame()
+            }
+        }.build()
     }
 
     override suspend fun getGame(gameId: Long): RepositoryResponse<GameBo?> {
-        TODO("Not yet implemented")
+        return object : LocalResponse<GameBo?>() {
+            override suspend fun loadFromLocal(): GameBo? {
+                return local.getGame(gameId)
+            }
+        }.build()
     }
 
     override suspend fun getGames(filter: GameFilter?): RepositoryResponse<List<GameBo>> {
