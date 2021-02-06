@@ -24,15 +24,19 @@ fun List<RoundBo>.addShot(gameId: Long, shotScore: Int): List<RoundBo> {
 
 fun List<RoundBo>.isComplete() = size == 10 && last().isComplete()
 
-private fun RoundBo.isStrike(): Boolean = TODO()
+private fun RoundBo.isStrike(): Boolean = firstShot == 10
 
-private fun RoundBo.isSpare(): Boolean = TODO()
+private fun RoundBo.isSpare(): Boolean = secondShot != null && firstShot + secondShot == 10
 
 /**
  * Indica que la ronda esta finalizada, no quedan lanzamientos pendientes
  */
 private fun RoundBo.isComplete(): Boolean {
-    TODO()
+    return if(roundNum < 10 ) {
+        firstShot == 10 || secondShot != null
+    } else {
+        thirdShot != null
+    }
 }
 
 private fun updateScores(result: MutableList<RoundBo>) {
@@ -62,5 +66,15 @@ private fun updateScores(result: MutableList<RoundBo>) {
  * Obtiene la puntuación acumulada de los 'x' siguientes lanzamientos a partir de 'startIndex'
  */
 private fun getNextShotsScore(roundList: List<RoundBo>, startIndex: Int, numberOfShots: Int): Int? {
-    TODO()
+    return roundList.getOrNull(startIndex)?.let { round ->
+        when(numberOfShots) {
+            1 -> round.firstShot
+            2-> when{
+                round.firstShot < 10 && round.secondShot != null ->  round.firstShot + round.secondShot
+                round.firstShot == 10 -> roundList.getOrNull(startIndex+1)?.let { nextRound -> round.firstShot + nextRound.firstShot }
+                else -> null
+            }
+            else -> null
+        }
+    }
 }
