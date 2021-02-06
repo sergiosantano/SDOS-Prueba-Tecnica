@@ -29,7 +29,7 @@ private fun RoundBo.isSpare(): Boolean = TODO()
 /**
  * Indica que la ronda esta finalizada, no quedan lanzamientos pendientes
  */
-private fun RoundBo.isComplete(): Boolean {
+fun RoundBo.isComplete(): Boolean {
     TODO()
 }
 

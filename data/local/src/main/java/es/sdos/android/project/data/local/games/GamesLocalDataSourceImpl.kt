@@ -1,10 +1,10 @@
 package es.sdos.android.project.data.local.games
 
 import es.sdos.android.project.data.datasource.games.GamesLocalDataSource
-import es.sdos.android.project.data.local.games.dbo.GameDbo
 import es.sdos.android.project.data.model.game.GameBo
 import es.sdos.android.project.data.model.game.GameFilter
 import es.sdos.android.project.data.model.game.addShot
+import es.sdos.android.project.data.model.game.isComplete
 import java.util.Date
 
 class GamesLocalDataSourceImpl(
@@ -16,22 +16,26 @@ class GamesLocalDataSourceImpl(
     }
 
     override suspend fun getGames(filter: GameFilter?): List<GameBo> {
-        TODO()
+        return gamesDao.getGames().map { gameDbo ->
+            gameDbo.toBo().copy(rounds = gamesDao.getRounds(gameDbo.id!!).map { it.toBo() })
+        }
     }
 
     override suspend fun saveGames(games: List<GameBo>) {
         games.forEach { game ->
-            TODO()
+            gamesDao.saveGame(game.toDbo())
+            game.rounds.forEach { gamesDao.saveRound(it.toDbo()) }
         }
     }
 
     override suspend fun createGame(): GameBo {
-        TODO()
+        val game = GameBo(null, Date(), listOf(), 0, false)
+        val gameId = gamesDao.saveGame(game.toDbo())
+        return gamesDao.getGame(gameId)!!.toBo()
     }
 
     override suspend fun deleteGame(gameId: Long) {
         gamesDao.deleteGame(gameId)
-        gamesDao.deleteRounds(gameId)
     }
 
     override suspend fun addShot(gameId: Long, shotScore: Int): GameBo? {
@@ -42,7 +46,12 @@ class GamesLocalDataSourceImpl(
 
         val game = gamesDao.getGame(gameId)
         if (game != null) {
-            //TODO
+            // Update score
+            game.totalScore += shotScore
+            // Check if the game is finished
+            game.finished = newRounds.size == 10 && newRounds.last().isComplete()
+            // Update game in DB
+            gamesDao.saveGame(game)
         }
 
         return getGame(gameId)
