@@ -7,6 +7,7 @@ import es.sdos.android.project.home.ui.adapter.RoundAdapter
 
 object GameBinding {
 
+    @JvmStatic
     fun shotScore(round: RoundBo, shotNumber: Int): String {
         return when (shotNumber) {
             1 -> {
@@ -37,7 +38,8 @@ object GameBinding {
         }
     }
 
-    fun intOrEmpty(value: Int?) : String {
+    @JvmStatic
+    fun intOrEmpty(value: Int?): String {
         return value?.toString() ?: ""
     }
 

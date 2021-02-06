@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import es.sdos.android.project.common.di.ViewModelFactory
@@ -34,8 +33,7 @@ class GameFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Toast.makeText(activity, navArgs.gameId.toString(), Toast.LENGTH_SHORT).show()
-        // viewModel.requestGame(args.id)
+        viewModel.requestGame(navArgs.gameId)
         viewModel.getGameLiveData().observe(viewLifecycleOwner, Observer { result ->
             binding.game = result.data?.takeIf { result.status == AsyncResult.Status.SUCCESS }
         })
