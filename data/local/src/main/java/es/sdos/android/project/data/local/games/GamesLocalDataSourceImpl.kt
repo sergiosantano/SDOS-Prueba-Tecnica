@@ -20,8 +20,8 @@ class GamesLocalDataSourceImpl(
             gameDbo.toBo().copy(rounds = gamesDao.getRounds(gameDbo.id!!).map { it.toBo() })
         }
 
-        return if(filter != null) {
-            allGames.filter { if(filter == GameFilter.FINISHED) it.finished else !it.finished }
+        return if (filter != null) {
+            allGames.filter { if (filter == GameFilter.FINISHED) it.finished else !it.finished }
         } else {
             allGames
         }
@@ -52,10 +52,11 @@ class GamesLocalDataSourceImpl(
 
         val game = gamesDao.getGame(gameId)
         if (game != null) {
-            // Update score
-            game.totalScore += shotScore
-            // Check if the game is finished
-            game.finished = newRounds.isComplete()
+            // Check if the game is finished and set final score
+            if (newRounds.isComplete()) {
+                game.finished = true
+                game.totalScore = newRounds.last().score!!
+            }
             // Update game in DB
             gamesDao.saveGame(game)
         }

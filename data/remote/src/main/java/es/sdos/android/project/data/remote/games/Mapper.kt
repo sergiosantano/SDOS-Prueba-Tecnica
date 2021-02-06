@@ -16,7 +16,7 @@ fun GameDto.toBo(): GameBo {
         id,
         Date(),
         rounds,
-        rounds.sumBy { it.score ?: 0 },
+        rounds.last().score ?: 0,
         rounds.isComplete()
     )
 }

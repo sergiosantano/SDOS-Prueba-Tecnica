@@ -32,10 +32,13 @@ private fun RoundBo.isSpare(): Boolean = secondShot != null && firstShot + secon
  * Indica que la ronda esta finalizada, no quedan lanzamientos pendientes
  */
 private fun RoundBo.isComplete(): Boolean {
-    return if(roundNum < 10 ) {
-        firstShot == 10 || secondShot != null
+    return if (roundNum < 10) {
+        isStrike() || secondShot != null
     } else {
-        thirdShot != null
+        when {
+            isStrike() || isSpare() -> thirdShot != null
+            else -> secondShot != null
+        }
     }
 }
 
@@ -67,11 +70,11 @@ private fun updateScores(result: MutableList<RoundBo>) {
  */
 private fun getNextShotsScore(roundList: List<RoundBo>, startIndex: Int, numberOfShots: Int): Int? {
     return roundList.getOrNull(startIndex)?.let { round ->
-        when(numberOfShots) {
+        when (numberOfShots) {
             1 -> round.firstShot
-            2-> when{
-                round.firstShot < 10 && round.secondShot != null ->  round.firstShot + round.secondShot
-                round.firstShot == 10 -> roundList.getOrNull(startIndex+1)?.let { nextRound -> round.firstShot + nextRound.firstShot }
+            2 -> when {
+                round.firstShot < 10 && round.secondShot != null -> round.firstShot + round.secondShot
+                round.firstShot == 10 -> roundList.getOrNull(startIndex + 1)?.let { nextRound -> round.firstShot + nextRound.firstShot }
                 else -> null
             }
             else -> null
