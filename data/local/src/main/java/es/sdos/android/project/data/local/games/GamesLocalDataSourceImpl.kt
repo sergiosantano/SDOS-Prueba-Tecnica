@@ -16,8 +16,14 @@ class GamesLocalDataSourceImpl(
     }
 
     override suspend fun getGames(filter: GameFilter?): List<GameBo> {
-        return gamesDao.getGames().map { gameDbo ->
+        val allGames = gamesDao.getGames().map { gameDbo ->
             gameDbo.toBo().copy(rounds = gamesDao.getRounds(gameDbo.id!!).map { it.toBo() })
+        }
+
+        return if(filter != null) {
+            allGames.filter { if(filter == GameFilter.FINISHED) it.finished else !it.finished }
+        } else {
+            allGames
         }
     }
 
