@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import es.sdos.android.project.common.di.ViewModelFactory
 import es.sdos.android.project.common.ui.BaseFragment
 import es.sdos.android.project.common.ui.BaseViewModel
@@ -19,6 +21,8 @@ class GameFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelFactory<GameViewModel>
     private val viewModel: GameViewModel by lazy { viewModelFactory.get() }
 
+    private val navArgs: GameFragmentArgs by navArgs()
+
     private lateinit var binding: FragmentGameBinding
 
 
@@ -30,7 +34,8 @@ class GameFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // TODO viewModel.requestGame(args.id)
+        Toast.makeText(activity, navArgs.gameId.toString(), Toast.LENGTH_SHORT).show()
+        // viewModel.requestGame(args.id)
         viewModel.getGameLiveData().observe(viewLifecycleOwner, Observer { result ->
             binding.game = result.data?.takeIf { result.status == AsyncResult.Status.SUCCESS }
         })

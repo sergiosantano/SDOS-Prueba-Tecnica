@@ -48,7 +48,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun goToGame(gameId: Long) {
-        navigate(HomeFragmentDirections.goToGame())
+        navigate(HomeFragmentDirections.goToGame(gameId))
     }
 
     fun getPendingGameLiveData() = pendingGameLiveData.liveData()
