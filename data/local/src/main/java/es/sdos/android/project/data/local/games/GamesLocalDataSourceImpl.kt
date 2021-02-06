@@ -49,7 +49,7 @@ class GamesLocalDataSourceImpl(
             // Update score
             game.totalScore += shotScore
             // Check if the game is finished
-            game.finished = newRounds.size == 10 && newRounds.last().isComplete()
+            game.finished = newRounds.isComplete()
             // Update game in DB
             gamesDao.saveGame(game)
         }

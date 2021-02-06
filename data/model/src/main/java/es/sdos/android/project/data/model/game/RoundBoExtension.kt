@@ -22,6 +22,8 @@ fun List<RoundBo>.addShot(gameId: Long, shotScore: Int): List<RoundBo> {
     return result
 }
 
+fun List<RoundBo>.isComplete() = size == 10 && last().isComplete()
+
 private fun RoundBo.isStrike(): Boolean = TODO()
 
 private fun RoundBo.isSpare(): Boolean = TODO()
@@ -29,7 +31,7 @@ private fun RoundBo.isSpare(): Boolean = TODO()
 /**
  * Indica que la ronda esta finalizada, no quedan lanzamientos pendientes
  */
-fun RoundBo.isComplete(): Boolean {
+private fun RoundBo.isComplete(): Boolean {
     TODO()
 }
 
