@@ -31,8 +31,15 @@ class HomeFragment : BaseFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewModel
         bindClicks()
-        initObservers()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getPendingGameLiveData().observe(viewLifecycleOwner, Observer { result ->
+            pendingGame = result.data?.takeIf { result.status == AsyncResult.Status.SUCCESS }?.firstOrNull()
+            binding.homeContinueGame.setVisible(pendingGame != null)
+        })
     }
 
     private fun bindClicks() {
@@ -44,34 +51,35 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun initObservers() {
-        viewModel.getPendingGameLiveData().observe(viewLifecycleOwner, Observer { result ->
-            pendingGame = result.data?.takeIf { result.status == AsyncResult.Status.SUCCESS }?.firstOrNull()
-            binding.homeContinueGame.setVisible(pendingGame != null)
-        })
-    }
-
     private fun onContinueGameClick() {
-        pendingGame?.id?.let { viewModel.goToGame(it) }
+        pendingGame?.id?.let {
+            viewModel.goToGame(it)
+        }
     }
 
     private fun onNewGameClick() {
         if (pendingGame != null) {
-            AlertDialog.Builder(context)
-                .setMessage(getString(R.string.delete_game_alert))
-                .setPositiveButton(R.string.game_continue) { _, _ -> onContinueGameClick() }
-                .setNegativeButton(R.string.game_new) { _, _ -> createNewGame(pendingGame!!.id) }
-                .create()
-                .show()
+            showWarningAlert()
         } else {
             createNewGame()
         }
     }
 
-    private fun createNewGame(pendingGameId: Long? = null) {
-        viewModel.createGame(pendingGameId).observe(viewLifecycleOwner, Observer { result ->
+    private fun showWarningAlert() {
+        AlertDialog.Builder(context)
+            .setMessage(getString(R.string.delete_game_alert))
+            .setPositiveButton(R.string.game_new) { _, _ -> createNewGame() }
+            .create()
+            .show()
+    }
+
+    private fun createNewGame() {
+        viewModel.deleteGame(pendingGame?.id)
+        viewModel.createGame().observe(viewLifecycleOwner, Observer { result ->
             binding.homeNewGame.isEnabled = result.status != AsyncResult.Status.LOADING
-            result.data?.takeIf { result.status == AsyncResult.Status.SUCCESS }?.id?.let { viewModel.goToGame(it) }
+            result.data?.takeIf { result.status == AsyncResult.Status.SUCCESS }?.id?.let {
+                viewModel.goToGame(it)
+            }
         })
     }
 

@@ -34,13 +34,21 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun createGame(pendingGameId: Long? = null): LiveData<AsyncResult<GameBo>> {
+    fun createGame(): LiveData<AsyncResult<GameBo>> {
         val createGameLiveData = MutableSourceLiveData<AsyncResult<GameBo>>()
         viewModelScope.launch(dispatchers.io) {
-            pendingGameId?.let { deleteGameUseCase(it) }
             createGameLiveData.changeSource(createGameUseCase())
+            requestPendingGame()
         }
         return createGameLiveData.liveData()
+    }
+
+    fun deleteGame(gameId: Long?) {
+        gameId?.let { id ->
+            viewModelScope.launch(dispatchers.io) {
+                deleteGameUseCase(id)
+            }
+        }
     }
 
     fun goToScores() {
