@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import es.sdos.android.project.common.di.ViewModelFactory
+import es.sdos.android.project.common.extension.showSnackbar
 import es.sdos.android.project.common.ui.BaseFragment
 import es.sdos.android.project.common.ui.BaseViewModel
 import es.sdos.android.project.data.repository.util.AsyncResult
+import es.sdos.android.project.feature.home.R
 import es.sdos.android.project.feature.home.databinding.FragmentGameBinding
 import es.sdos.android.project.home.ui.viewmodel.GameViewModel
 import javax.inject.Inject
@@ -36,7 +38,9 @@ class GameFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.requestGame(navArgs.gameId)
         viewModel.getGameLiveData().observe(viewLifecycleOwner, Observer { result ->
-            binding.game = result.data?.takeIf { result.status == AsyncResult.Status.SUCCESS }
+            val game = result.data?.takeIf { result.status == AsyncResult.Status.SUCCESS }
+            binding.game = game
+            game?.let { if(it.finished) showSnackbar(getString(R.string.game_ended)) }
         })
 
     }
