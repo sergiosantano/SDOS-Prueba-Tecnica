@@ -24,6 +24,7 @@ object GameBinding {
                 round.secondShot?.let { secondShot ->
                     when {
                         secondShot == 0 -> "-"
+                        secondShot == 10 -> "X"
                         secondShot + round.firstShot == 10 -> "/"
                         else -> secondShot.toString()
                     }
