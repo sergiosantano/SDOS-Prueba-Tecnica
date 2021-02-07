@@ -1,7 +1,6 @@
 package es.sdos.android.project.home.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import es.sdos.android.project.common.ui.BaseViewModel
 import es.sdos.android.project.common.util.lifecycle.MutableSourceLiveData
 import es.sdos.android.project.data.model.game.GameBo
@@ -20,14 +19,11 @@ class HomeViewModel @Inject constructor(
     private val getGamesUseCase: GetGamesUseCase,
     private val deleteGameUseCase: DeleteGameUseCase,
     private val dispatchers: AppDispatchers
-) : BaseViewModel() {
+) : BaseViewModel(), LifecycleObserver {
 
     private val pendingGameLiveData = MutableSourceLiveData<AsyncResult<List<GameBo>>>()
 
-    init {
-        requestPendingGame()
-    }
-
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun requestPendingGame() {
         viewModelScope.launch(dispatchers.io) {
             pendingGameLiveData.changeSource(getGamesUseCase(GameFilter.NOT_FINISHED))
@@ -38,7 +34,6 @@ class HomeViewModel @Inject constructor(
         val createGameLiveData = MutableSourceLiveData<AsyncResult<GameBo>>()
         viewModelScope.launch(dispatchers.io) {
             createGameLiveData.changeSource(createGameUseCase())
-            requestPendingGame()
         }
         return createGameLiveData.liveData()
     }
