@@ -39,7 +39,7 @@ class GameViewModel @Inject constructor(
             gameId?.let { id ->
                 viewModelScope.launch(dispatchers.io) {
                     gameLiveData.changeSource(addShotUseCase(id, score))
-
+                    shotInput.postValue("")
                 }
             }
         }
