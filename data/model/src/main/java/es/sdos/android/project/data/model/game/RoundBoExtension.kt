@@ -36,7 +36,8 @@ private fun RoundBo.isComplete(): Boolean {
         isStrike() || secondShot != null
     } else {
         when {
-            isStrike() || isSpare() -> thirdShot != null
+            isStrike() -> secondShot != null && thirdShot != null
+            isSpare() -> thirdShot != null
             else -> secondShot != null
         }
     }
@@ -72,10 +73,12 @@ private fun getNextShotsScore(roundList: List<RoundBo>, startIndex: Int, numberO
     return roundList.getOrNull(startIndex)?.let { round ->
         when (numberOfShots) {
             1 -> round.firstShot
-            2 -> when {
-                round.firstShot < 10 && round.secondShot != null -> round.firstShot + round.secondShot
-                round.firstShot == 10 -> roundList.getOrNull(startIndex + 1)?.let { nextRound -> round.firstShot + nextRound.firstShot }
-                else -> null
+            2 -> {
+                if (round.secondShot != null) {
+                    round.firstShot + round.secondShot
+                } else {
+                    roundList.getOrNull(startIndex + 1)?.let { nextRound -> round.firstShot + nextRound.firstShot }
+                }
             }
             else -> null
         }
