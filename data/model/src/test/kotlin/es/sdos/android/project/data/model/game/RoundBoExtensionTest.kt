@@ -142,6 +142,35 @@ class RoundBoExtensionTest {
         checkAllScores(result[9], 5, 5, 5, 150)
     }
 
+
+    @Test
+    fun `valid scores test`() {
+        // Given
+        val emptyRounds = listOf<RoundBo>()
+        val incompleteRound = listOf(RoundBo(1, 1, 1, 5, null, null, null))
+
+        // Then
+        assert(!emptyRounds.invalidScore(10))
+        assert(!emptyRounds.invalidScore(0))
+        assert(!emptyRounds.invalidScore(4))
+        assert(!incompleteRound.invalidScore(5))
+        assert(!incompleteRound.invalidScore(0))
+        assert(!incompleteRound.invalidScore(3))
+    }
+
+    @Test
+    fun `invalid scores test`() {
+        // Given
+        val emptyRounds = listOf<RoundBo>()
+        val incompleteRound = listOf(RoundBo(1, 1, 1, 5, null, null, null))
+
+        // Then
+        assert(emptyRounds.invalidScore(-1))
+        assert(emptyRounds.invalidScore(11))
+        assert(incompleteRound.invalidScore(11))
+        assert(incompleteRound.invalidScore(6))
+    }
+
     /*
      * --------------------------------------------------------------------
      *                          UTIL METHODS

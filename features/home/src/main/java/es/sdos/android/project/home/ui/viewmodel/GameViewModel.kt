@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import es.sdos.android.project.common.ui.BaseViewModel
 import es.sdos.android.project.common.util.lifecycle.MutableSourceLiveData
 import es.sdos.android.project.data.model.game.GameBo
+import es.sdos.android.project.data.model.game.RoundBo
+import es.sdos.android.project.data.model.game.invalidScore
 import es.sdos.android.project.data.repository.util.AppDispatchers
 import es.sdos.android.project.data.repository.util.AsyncResult
 import es.sdos.android.project.home.domain.AddShotUseCase
@@ -48,7 +50,7 @@ class GameViewModel @Inject constructor(
         return when {
             currentShotInput.isNullOrEmpty() -> setInputError("Obligatorio")
             currentShotInput.toIntOrNull() == null -> setInputError("Solo números")
-            currentShotInput.toInt() > 10 -> setInputError("Valor ilegal")
+            getRoundsFromCurrentGame()?.invalidScore(currentShotInput.toInt()) ?: true -> setInputError("Valor ilegal")
             else -> currentShotInput.toInt()
         }
     }
@@ -56,5 +58,11 @@ class GameViewModel @Inject constructor(
     private fun setInputError(message: String): Int? {
         shotInputErrorMsg.value = message
         return null
+    }
+
+    private fun getRoundsFromCurrentGame(): List<RoundBo>? {
+        return getGameLiveData().value?.let { result ->
+            result.data.takeIf { result.status == AsyncResult.Status.SUCCESS }?.rounds
+        }
     }
 }

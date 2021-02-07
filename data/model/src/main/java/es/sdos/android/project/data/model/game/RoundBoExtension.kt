@@ -22,11 +22,22 @@ fun List<RoundBo>.addShot(gameId: Long, shotScore: Int): List<RoundBo> {
     return result
 }
 
-fun List<RoundBo>.isComplete() = size == 10 && last().isComplete()
-
 private fun RoundBo.isStrike(): Boolean = firstShot == 10
 
 private fun RoundBo.isSpare(): Boolean = secondShot != null && firstShot + secondShot == 10
+
+fun List<RoundBo>.isComplete() = size == 10 && last().isComplete()
+
+fun List<RoundBo>.invalidScore(score: Int): Boolean {
+    if(score < 0 || score > 10) return true
+
+    if(lastOrNull() != null && !last().isComplete()) {
+        return last().firstShot + score > 10
+    }
+    return false
+}
+
+
 
 /**
  * Indica que la ronda esta finalizada, no quedan lanzamientos pendientes
