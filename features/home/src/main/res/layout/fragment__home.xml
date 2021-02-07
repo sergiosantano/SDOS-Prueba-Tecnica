@@ -21,7 +21,6 @@
             android:layout_marginStart="@dimen/extra"
             android:layout_marginEnd="@dimen/extra"
             android:text="@string/game_continue"
-            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/home__new_game"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

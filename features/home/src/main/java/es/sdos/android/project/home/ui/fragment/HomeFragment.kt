@@ -30,6 +30,7 @@ class HomeFragment : BaseFragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = viewModel
+        lifecycle.addObserver(viewModel)
         bindClicks()
         return binding.root
     }
@@ -37,8 +38,10 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getPendingGameLiveData().observe(viewLifecycleOwner, Observer { result ->
-            pendingGame = result.data?.takeIf { result.status == AsyncResult.Status.SUCCESS }?.firstOrNull()
-            binding.homeContinueGame.setVisible(pendingGame != null)
+            if (result.status == AsyncResult.Status.SUCCESS) {
+                pendingGame = result.data?.firstOrNull()
+                binding.homeContinueGame.setVisible(pendingGame != null)
+            }
         })
     }
 
