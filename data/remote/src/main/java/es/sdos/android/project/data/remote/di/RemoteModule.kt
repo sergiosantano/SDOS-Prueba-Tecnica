@@ -35,7 +35,7 @@ class RemoteModule {
     @Provides
     fun gsonProvider() =
         GsonBuilder()
-            .setDateFormat("dd/MM/yyyy")
+            .setDateFormat("yyyy/MM/dd")
             .create()
 
     @Provides

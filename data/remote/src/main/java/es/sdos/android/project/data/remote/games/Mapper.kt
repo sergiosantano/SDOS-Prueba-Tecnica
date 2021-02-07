@@ -5,7 +5,6 @@ import es.sdos.android.project.data.model.game.RoundBo
 import es.sdos.android.project.data.model.game.addShot
 import es.sdos.android.project.data.model.game.isComplete
 import es.sdos.android.project.data.remote.games.dto.GameDto
-import java.util.Date
 
 fun GameDto.toBo(): GameBo {
     val rounds = calculateRounds(id, shoots.split(",").map {
@@ -14,7 +13,7 @@ fun GameDto.toBo(): GameBo {
     })
     return GameBo(
         id,
-        Date(),
+        date,
         rounds,
         rounds.last().score ?: 0,
         rounds.isComplete()
