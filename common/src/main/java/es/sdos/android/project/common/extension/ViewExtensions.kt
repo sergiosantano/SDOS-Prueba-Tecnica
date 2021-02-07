@@ -1,9 +1,11 @@
 package es.sdos.android.project.common.extension
 
+import android.app.Activity
 import android.content.ContextWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentActivity
 
 
@@ -57,4 +59,9 @@ fun View?.setMargins(left: Int = 0, top: Int = 0, right: Int = 0, bottom: Int = 
         layoutParams.setMargins(left, top, right, bottom)
         this?.layoutParams = layoutParams
     }
+}
+
+fun View.hideKeyboard() {
+    val inputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
 }

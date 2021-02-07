@@ -4,6 +4,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import es.sdos.android.project.common.extension.hideKeyboard
 import es.sdos.android.project.common.extension.setInvisible
 import es.sdos.android.project.common.extension.setVisible
 import es.sdos.android.project.data.repository.util.AsyncResult
@@ -33,6 +34,15 @@ object CommonBinding {
     @JvmStatic
     fun isVisible(view: View, visible: Boolean) {
         view.isVisible = visible
+    }
+
+    @BindingAdapter("app:hideKeyboardOnClick")
+    @JvmStatic
+    fun hideKeyboardOnClick(view: View, block: () -> Unit) {
+        view.setOnClickListener {
+            view.hideKeyboard()
+            block.invoke()
+        }
     }
 
 }
