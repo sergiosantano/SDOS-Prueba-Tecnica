@@ -51,14 +51,8 @@ class GamesLocalDataSourceImpl(
         }
 
         val game = gamesDao.getGame(gameId)
-        if (game != null) {
-            // Check if the game is finished and set final score
-            if (newRounds.isComplete()) {
-                game.finished = true
-                game.totalScore = newRounds.last().score!!
-            }
-            // Update game in DB
-            gamesDao.saveGame(game)
+        if (game != null && newRounds.isComplete()) {
+            gamesDao.saveGame(game.copy(finished = true, totalScore = newRounds.last().score ?: 0))
         }
 
         return getGame(gameId)
