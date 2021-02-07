@@ -39,11 +39,23 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:scoreHistoryItems="@{viewmodel.finishedGamesLiveData}"
+            app:hideWhenLoading="@{viewmodel.finishedGamesLiveData}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/score__label__score"
             tools:listitem="@layout/row__scores" />
+
+        <ProgressBar
+            android:id="@+id/SCORES__progress"
+            android:layout_width="@dimen/progress_size"
+            android:layout_height="@dimen/progress_size"
+            app:showWhenLoading="@{viewmodel.finishedGamesLiveData}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

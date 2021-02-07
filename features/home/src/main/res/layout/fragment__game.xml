@@ -83,8 +83,8 @@
 
         <ProgressBar
             android:id="@+id/game__progress"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/progress_size"
+            android:layout_height="@dimen/progress_size"
             app:showWhenLoading="@{viewModel.gameLiveData}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
