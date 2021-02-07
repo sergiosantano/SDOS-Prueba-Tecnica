@@ -6,14 +6,14 @@ import es.sdos.android.dependencies.Dependencies
 
 dependencies {
     // ANDROID TEST
-    androidTestImplementation Dependencies.AndroidTest.core
-    androidTestImplementation Dependencies.AndroidTest.espressoCore
-    androidTestImplementation Dependencies.AndroidTest.runner
+    testImplementation Dependencies.AndroidTest.core
+    testImplementation Dependencies.AndroidTest.espressoCore
+    testImplementation Dependencies.AndroidTest.runner
     // KOIN
-    androidTestImplementation Dependencies.AndroidTest.koin
+    testImplementation Dependencies.AndroidTest.koin
     // ANDROID
-    androidTestImplementation Dependencies.AndroidTest.archCoreTest
-    androidTestImplementation Dependencies.AndroidTest.junit
+    testImplementation Dependencies.AndroidTest.archCoreTest
+    testImplementation Dependencies.AndroidTest.junit
     // MOCK
-    androidTestImplementation Dependencies.AndroidTest.mockk
+    testImplementation Dependencies.AndroidTest.mockk
 }

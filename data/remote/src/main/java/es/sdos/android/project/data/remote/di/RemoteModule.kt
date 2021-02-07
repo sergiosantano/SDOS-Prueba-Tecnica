@@ -17,7 +17,7 @@ import javax.inject.Singleton
 @Module
 class RemoteModule {
     companion object {
-        private const val BASE_URL = "https://api.myjson.com/"
+        private const val BASE_URL = "https://raw.githubusercontent.com/"
     }
 
     @Provides
@@ -35,7 +35,7 @@ class RemoteModule {
     @Provides
     fun gsonProvider() =
         GsonBuilder()
-            .setDateFormat("dd/MM/yyyy")
+            .setDateFormat("yyyy/MM/dd")
             .create()
 
     @Provides

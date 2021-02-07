@@ -17,12 +17,14 @@
 
     <style name="Text.Small">
         <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="Text.Title">
         <item name="android:textSize">@dimen/text_title</item>
         <item name="android:textColor">@color/text_title</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
     </style>
     <!--endregion-->
 </resources>

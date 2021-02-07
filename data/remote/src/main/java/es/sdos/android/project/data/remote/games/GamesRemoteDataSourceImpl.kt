@@ -8,7 +8,9 @@ class GamesRemoteDataSourceImpl(
 ) : GamesRemoteDataSource {
 
     override suspend fun getGames() = RemoteErrorManagement.wrap {
-        gamesWs.getGames().games.map { it.toBo() }
+        val remoteGames = gamesWs.getGames()
+
+        remoteGames.games.map { it.toBo() }
     }
 
 }
